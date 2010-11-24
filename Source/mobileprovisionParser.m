@@ -38,17 +38,17 @@ int main (int argc, const char * argv[]) {
 			if ([option isEqualToString:@"type"]) {
 				if ([plist valueForKeyPath:@"ProvisionedDevices"]) {
 					if ([[plist valueForKeyPath:@"Entitlements.get-task-allow"] boolValue]) {
-						printf("debug");
+						printf("debug\n");
 					} else {
-						printf("ad-hoc");
+						printf("ad-hoc\n");
 					}
 				} else {
-					printf("appstore");
+					printf("appstore\n");
 				}
 			} else 
 				//get the UUID of the profile
 				if ([option isEqualToString:@"uuid"]) {
-					printf("%s", [[plist valueForKeyPath:@"UUID"] cStringUsingEncoding:NSUTF8StringEncoding]);
+					printf("%s\n", [[plist valueForKeyPath:@"UUID"] cStringUsingEncoding:NSUTF8StringEncoding]);
 				} else 
 					//get the supported devices list
 					if ([option isEqualToString:@"devices"]) {
