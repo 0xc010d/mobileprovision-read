@@ -10,6 +10,9 @@ int main (int argc, const char * argv[]) {
 	if (!file) {
 		file = [arguments stringForKey:@"-file"];
 		if	(!file) {
+            printf("\n\
+The script usage:\n\
+\033[1mmobileprovisionParser\033[0m -f \033[4mfileName\033[0m [-o \033[4moption\033[0m]\n\n");
 			return 1001;
 		}
 	}
