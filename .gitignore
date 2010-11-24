@@ -1,0 +1,11 @@
+#xcode noice
+build/*
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+
+#svn
+.svn
+
+#osx noice
+.DS_Store
+profile
