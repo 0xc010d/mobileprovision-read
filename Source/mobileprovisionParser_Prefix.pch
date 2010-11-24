@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'mobileprovisionParser' target in the 'mobileprovisionParser' project.
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif

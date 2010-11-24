@@ -26,7 +26,6 @@
 /* Begin PBXFileReference section */
 		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		46D2CFCE129D212A00B15ABD /* mobileprovisionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = mobileprovisionParser.m; sourceTree = "<group>"; };
-		46D2CFCF129D212A00B15ABD /* mobileprovisionParser_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mobileprovisionParser_Prefix.pch; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* mobileprovisionParser */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mobileprovisionParser; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -72,7 +71,6 @@
 			isa = PBXGroup;
 			children = (
 				46D2CFCE129D212A00B15ABD /* mobileprovisionParser.m */,
-				46D2CFCF129D212A00B15ABD /* mobileprovisionParser_Prefix.pch */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -143,8 +141,8 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Source/mobileprovisionParser_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = mobileprovisionParser;
 			};
@@ -156,8 +154,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Source/mobileprovisionParser_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = mobileprovisionParser;
 			};
