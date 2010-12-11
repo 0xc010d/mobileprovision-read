@@ -51,14 +51,14 @@ The script usage:\n\
 			} else 
 				//get the UUID of the profile
 				if ([option isEqualToString:@"uuid"]) {
-					printf("%s\n", [[plist valueForKeyPath:@"UUID"] cStringUsingEncoding:NSUTF8StringEncoding]);
+					printf("%s\n", [[plist valueForKeyPath:@"UUID"] UTF8String]);
 				} else 
 					//get the supported devices list
 					if ([option isEqualToString:@"devices"]) {
 						NSArray *devices = [plist valueForKeyPath:@"ProvisionedDevices"];
 						if (devices) {
 							for (NSString *deviceId in devices) {
-								printf("%s\n", [deviceId cStringUsingEncoding:NSUTF8StringEncoding]);
+								printf("%s\n", [deviceId UTF8String]);
 							}
 						}
 					}
