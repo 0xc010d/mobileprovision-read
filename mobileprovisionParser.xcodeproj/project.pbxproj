@@ -145,6 +145,7 @@
 				GCC_PREFIX_HEADER = "";
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = mobileprovisionParser;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -158,6 +159,7 @@
 				GCC_PREFIX_HEADER = "";
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = mobileprovisionParser;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

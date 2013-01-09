@@ -52,7 +52,14 @@ The script usage:\n\
 				//get the UUID of the profile
 				if ([option isEqualToString:@"uuid"]) {
 					printf("%s\n", [[plist valueForKeyPath:@"UUID"] UTF8String]);
-				} else 
+                }else if([option isEqualToString:@"appid"]){
+                    NSString *pid =  [[plist valueForKeyPath:@"Entitlements" ]valueForKeyPath:@"application-identifier"];
+                    NSMutableString *apid =  [[[plist valueForKeyPath:@"ApplicationIdentifierPrefix"] objectAtIndex:0] mutableCopy];
+                    [apid appendString:@"."];
+                    NSString *app_id = [pid stringByReplacingOccurrencesOfString:apid withString:@""];
+                    printf("%s\n", [app_id UTF8String]);
+                }
+                else
 					//get the supported devices list
 					if ([option isEqualToString:@"devices"]) {
 						NSArray *devices = [plist valueForKeyPath:@"ProvisionedDevices"];
