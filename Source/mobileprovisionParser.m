@@ -24,7 +24,8 @@ The script usage:\n\
 	}
 	
 	//get plist XML
-	NSString *fileString = [[NSString alloc] initWithContentsOfFile:file];
+//	NSString *fileString = [[NSString alloc] initWithContentsOfFile:file];
+    NSString *fileString = [[NSString alloc] initWithContentsOfFile:file encoding:NSStringEncodingConversionAllowLossy error:nil];
 	NSScanner *scanner = [[NSScanner alloc] initWithString:fileString];
 	[fileString release];	
 	if ([scanner scanUpToString:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" intoString:NULL]) {
