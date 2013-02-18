@@ -24,8 +24,7 @@ The script usage:\n\
 	}
 	
 	//get plist XML
-//	NSString *fileString = [[NSString alloc] initWithContentsOfFile:file];
-    NSString *fileString = [[NSString alloc] initWithContentsOfFile:file encoding:NSStringEncodingConversionAllowLossy error:nil];
+	NSString *fileString = [[NSString alloc] initWithContentsOfFile:file encoding:NSStringEncodingConversionAllowLossy error:nil];
 	NSScanner *scanner = [[NSScanner alloc] initWithString:fileString];
 	[fileString release];	
 	if ([scanner scanUpToString:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" intoString:NULL]) {
@@ -36,45 +35,54 @@ The script usage:\n\
 			
 			//get profile type
 			//possible types:
-			//		ad-hoc
-			//		appstore
 			//		debug
+			//		ad-hoc
+			//		enterprise
+			//		appstore
 			if ([option isEqualToString:@"type"]) {
 				if ([plist valueForKeyPath:@"ProvisionedDevices"]) {
 					if ([[plist valueForKeyPath:@"Entitlements.get-task-allow"] boolValue]) {
 						printf("debug\n");
-					} else {
+					} 
+					else {
 						printf("ad-hoc\n");
 					}
-				} else {
+				} 
+				else if ([[plist valueForKeyPath:@"ProvisionsAllDevices"] boolValue]) {
+					printf("enterprise\n");
+				}
+				else {
 					printf("appstore\n");
 				}
-			} else 
-				//get the UUID of the profile
-				if ([option isEqualToString:@"uuid"]) {
-					printf("%s\n", [[plist valueForKeyPath:@"UUID"] UTF8String]);
-                }else if([option isEqualToString:@"appid"]){
-                    NSString *pid =  [[plist valueForKeyPath:@"Entitlements" ]valueForKeyPath:@"application-identifier"];
-                    NSMutableString *apid =  [[[plist valueForKeyPath:@"ApplicationIdentifierPrefix"] objectAtIndex:0] mutableCopy];
-                    [apid appendString:@"."];
-                    NSString *app_id = [pid stringByReplacingOccurrencesOfString:apid withString:@""];
-                    printf("%s\n", [app_id UTF8String]);
-                }
-                else
-					//get the supported devices list
-					if ([option isEqualToString:@"devices"]) {
-						NSArray *devices = [plist valueForKeyPath:@"ProvisionedDevices"];
-						if (devices) {
-							for (NSString *deviceId in devices) {
-								printf("%s\n", [deviceId UTF8String]);
-							}
-						}
+			} 
+			//get the UUID of the profile
+			else if ([option isEqualToString:@"uuid"]) {
+				printf("%s\n", [[plist valueForKeyPath:@"UUID"] UTF8String]);
+			} 
+			//get application identifier prefix
+			else if([option isEqualToString:@"appid"]) {
+				NSString *pid = [[plist valueForKeyPath:@"Entitlements"] valueForKeyPath:@"application-identifier"];
+				NSMutableString *apid =  [[[plist valueForKeyPath:@"ApplicationIdentifierPrefix"] objectAtIndex:0] mutableCopy];
+				[apid appendString:@"."];
+				NSString *app_id = [pid stringByReplacingOccurrencesOfString:apid withString:@""];
+				printf("%s\n", [app_id UTF8String]);
+			} 
+			//get the supported devices list
+			else if ([option isEqualToString:@"devices"]) {
+				NSArray *devices = [plist valueForKeyPath:@"ProvisionedDevices"];
+				if (devices) {
+					for (NSString *deviceId in devices) {
+						printf("%s\n", [deviceId UTF8String]);
 					}
-		} else {
+				}
+			}
+		} 
+		else {
 			[scanner release];
 			return 1002;
 		}
-	} else {
+	} 
+	else {
 		[scanner release];
 		return 1002;
 	}
