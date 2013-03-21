@@ -76,6 +76,12 @@ The script usage:\n\
 					}
 				}
 			}
+            else if ([option isEqualToString:@"bundleid"]) {
+                NSString *bundleid = [plist valueForKeyPath:@"Entitlements.application-identifier"];
+                if (bundleid) {
+                    printf("%s\n", [bundleid UTF8String]);
+                }
+            }
 		} 
 		else {
 			[scanner release];
