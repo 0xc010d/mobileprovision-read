@@ -47,7 +47,7 @@ You can also use \033[1mkey path\033[0m as an option.\n\
         plistString = [[NSString alloc] initWithData:(NSData *)dataRef encoding:NSUTF8StringEncoding];
     }
     @catch (NSException *exception) {
-        @throw exception;
+        printf("Could not decode file.\n");
     }
     @finally {
         if (decoder) CFRelease(decoder);
