@@ -1,3 +1,25 @@
+/*
+Copyright (c) 2013 Eugene Solodovnykov
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
  
@@ -37,14 +59,16 @@ You can also use \033[1mkey path\033[0m as an option.\n\
     CMSDecoderRef decoder = NULL;
     CFDataRef dataRef = NULL;
     NSString *plistString = nil;
- 
+    NSDictionary *plist = nil;
+
     @try {
         CMSDecoderCreate(&decoder);
         NSData *fileData = [NSData dataWithContentsOfFile:file];
         CMSDecoderUpdateMessage(decoder, fileData.bytes, fileData.length);
         CMSDecoderFinalizeMessage(decoder);
         CMSDecoderCopyContent(decoder, &dataRef);
-        plistString = [[NSString alloc] initWithData:(NSData *)dataRef encoding:NSUTF8StringEncoding];
+        plistString = [[[NSString alloc] initWithData:(NSData *)dataRef encoding:NSUTF8StringEncoding] autorelease];
+        plist = [plistString propertyList];
     }
     @catch (NSException *exception) {
         printf("Could not decode file.\n");
@@ -54,47 +78,41 @@ You can also use \033[1mkey path\033[0m as an option.\n\
         if (dataRef) CFRelease(dataRef);
     }
  
-    if (plistString) {
-        NSDictionary *plist = [plistString propertyList];
- 
-        if (!option) {
-            printf("%s", [plistString UTF8String]);
-        }
-        if ([option isEqualToString:@"type"]) {
-            if ([plist valueForKeyPath:@"ProvisionedDevices"]){
-                if ([[plist valueForKeyPath:@"Entitlements.get-task-allow"] boolValue]) {
-                    printf("debug\n");
-                }
-                else {
-                    printf("ad-hoc\n");
-                }
-            }
-            else if ([[plist valueForKeyPath:@"ProvisionsAllDevices"] boolValue]) {
-                    printf("enterprise\n");
+    if (!option) {
+        printf("%s", [plistString UTF8String]);
+    }
+    if ([option isEqualToString:@"type"]) {
+        if ([plist valueForKeyPath:@"ProvisionedDevices"]){
+            if ([[plist valueForKeyPath:@"Entitlements.get-task-allow"] boolValue]) {
+                printf("debug\n");
             }
             else {
-                    printf("appstore\n");
+                printf("ad-hoc\n");
             }
         }
-        else if ([option isEqualToString:@"appid"]) {
-            NSString *applicationIdentifier = [plist valueForKeyPath:@"Entitlements.application-identifier"];
-            NSString *prefix = [[[plist valueForKeyPath:@"ApplicationIdentifierPrefix"] objectAtIndex:0] stringByAppendingString:@"."];
-            printf("%s\n", [[applicationIdentifier stringByReplacingOccurrencesOfString:prefix withString:@""] UTF8String]);
+        else if ([[plist valueForKeyPath:@"ProvisionsAllDevices"] boolValue]) {
+                printf("enterprise\n");
         }
         else {
-            id result = [plist valueForKeyPath:option];
-            if (result) {
-                if ([result isKindOfClass:[NSArray class]] && [result count]) {
-                    printf("%s\n", [[result componentsJoinedByString:@"\n"] UTF8String]);
-                }
-                else {
-                    printf("%s\n", [[result description] UTF8String]);
-                }
+                printf("appstore\n");
+        }
+    }
+    else if ([option isEqualToString:@"appid"]) {
+        NSString *applicationIdentifier = [plist valueForKeyPath:@"Entitlements.application-identifier"];
+        NSString *prefix = [[[plist valueForKeyPath:@"ApplicationIdentifierPrefix"] objectAtIndex:0] stringByAppendingString:@"."];
+        printf("%s\n", [[applicationIdentifier stringByReplacingOccurrencesOfString:prefix withString:@""] UTF8String]);
+    }
+    else {
+        id result = [plist valueForKeyPath:option];
+        if (result) {
+            if ([result isKindOfClass:[NSArray class]] && [result count]) {
+                printf("%s\n", [[result componentsJoinedByString:@"\n"] UTF8String]);
+            }
+            else {
+                printf("%s\n", [[result description] UTF8String]);
             }
         }
     }
- 
-    [plistString release];
- 
+
     return 0;
 }
